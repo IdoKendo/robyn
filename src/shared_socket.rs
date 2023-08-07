@@ -13,7 +13,7 @@ pub struct SocketHeld {
 #[pymethods]
 impl SocketHeld {
     #[new]
-    pub fn new(ip: String, port: u16) -> PyResult<SocketHeld> {
+    pub fn new(ip: String, port: u16) -> PyResult<Self> {
         let ip: IpAddr = ip.parse()?;
         let socket = if ip.is_ipv4() {
             Socket::new(Domain::IPV4, Type::STREAM, Some(Protocol::TCP))?
@@ -30,12 +30,12 @@ impl SocketHeld {
         socket.bind(&address.into())?;
         socket.listen(1024)?;
 
-        Ok(SocketHeld { socket })
+        Ok(Self { socket })
     }
 
-    pub fn try_clone(&self) -> PyResult<SocketHeld> {
+    pub fn try_clone(&self) -> PyResult<Self> {
         let copied = self.socket.try_clone()?;
-        Ok(SocketHeld { socket: copied })
+        Ok(Self { socket: copied })
     }
 }
 

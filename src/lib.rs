@@ -1,3 +1,18 @@
+#![cfg_attr(feature = "pedantic", warn(clippy::pedantic))]
+#![warn(clippy::use_self)]
+#![warn(clippy::map_flatten)]
+#![warn(clippy::map_unwrap_or)]
+#![warn(clippy::flat_map_option)]
+#![warn(deprecated_in_future)]
+#![warn(future_incompatible)]
+#![warn(noop_method_call)]
+#![warn(rust_2018_compatibility)]
+#![warn(rust_2021_compatibility)]
+#![warn(rust_2018_idioms)]
+#![warn(trivial_casts)]
+#![warn(unused)]
+#![deny(warnings)]
+
 mod executors;
 mod io_helpers;
 mod routers;
@@ -28,7 +43,7 @@ fn get_version() -> String {
 }
 
 #[inline]
-fn conv_py_to_json_string(py: Python, v: Py<PyAny>) -> Result<Value, PythonizeError> {
+fn conv_py_to_json_string(py: Python<'_>, v: &Py<PyAny>) -> Result<Value, PythonizeError> {
     depythonize(v.as_ref(py))
 }
 
@@ -36,8 +51,8 @@ fn conv_py_to_json_string(py: Python, v: Py<PyAny>) -> Result<Value, PythonizeEr
 /// Converts a python object to a json string
 /// This function also allows the possibility of not converting the object to a json string
 /// and instead using Value in the rust code
-fn jsonify(py: Python, value: PyObject) -> PyResult<String> {
-    let data = match conv_py_to_json_string(py, value) {
+fn jsonify(py: Python<'_>, value: PyObject) -> PyResult<String> {
+    let data = match conv_py_to_json_string(py, &value) {
         Ok(res) => res,
         Err(_e) => return Err(PyValueError::new_err("Cannot parse json")),
     };

@@ -80,7 +80,7 @@ pub fn get_body_from_pyobject(body: &PyAny) -> PyResult<Vec<u8>> {
     }
 }
 
-pub fn check_body_type(py: Python, body: Py<PyAny>) -> PyResult<()> {
+pub fn check_body_type(py: Python<'_>, body: Py<PyAny>) -> PyResult<()> {
     if body.downcast::<PyString>(py).is_err() && body.downcast::<PyBytes>(py).is_err() {
         return Err(PyValueError::new_err(
             "Could not convert specified body to bytes",

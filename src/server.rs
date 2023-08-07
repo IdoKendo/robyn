@@ -77,7 +77,7 @@ impl Server {
 
     pub fn start(
         &mut self,
-        py: Python,
+        py: Python<'_>,
         socket: &PyCell<SocketHeld>,
         workers: usize,
     ) -> PyResult<()> {
@@ -281,7 +281,7 @@ impl Server {
     /// can be called after the server has been started
     pub fn add_route(
         &self,
-        py: Python,
+        py: Python<'_>,
         route_type: &HttpMethod,
         route: &str,
         function: FunctionInfo,

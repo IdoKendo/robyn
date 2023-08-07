@@ -104,7 +104,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWs {
                 let function = self.router.get("connect").unwrap();
                 debug!("{:?}", function.handler);
                 execute_ws_function(function, None, &self.task_locals, ctx, self);
-                ctx.pong(&msg)
+                ctx.pong(&msg);
             }
             Ok(ws::Message::Pong(msg)) => {
                 debug!("Pong message {:?}", msg);

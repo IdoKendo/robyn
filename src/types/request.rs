@@ -21,7 +21,7 @@ pub struct Request {
 }
 
 impl ToPyObject for Request {
-    fn to_object(&self, py: Python) -> PyObject {
+    fn to_object(&self, py: Python<'_>) -> PyObject {
         let queries = self.queries.clone().into_py(py).extract(py).unwrap();
         let headers = self.headers.clone().into_py(py).extract(py).unwrap();
         let path_params = self.path_params.clone().into_py(py).extract(py).unwrap();
@@ -113,7 +113,7 @@ pub struct PyRequest {
 #[pymethods]
 impl PyRequest {
     #[setter]
-    pub fn set_body(&mut self, py: Python, body: Py<PyAny>) -> PyResult<()> {
+    pub fn set_body(&mut self, py: Python<'_>, body: Py<PyAny>) -> PyResult<()> {
         check_body_type(py, body.clone())?;
         self.body = body;
         Ok(())

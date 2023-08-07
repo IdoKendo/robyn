@@ -55,7 +55,7 @@ impl Response {
 }
 
 impl ToPyObject for Response {
-    fn to_object(&self, py: Python) -> PyObject {
+    fn to_object(&self, py: Python<'_>) -> PyObject {
         let headers = self.headers.clone().into_py(py).extract(py).unwrap();
         let body = String::from_utf8(self.body.to_vec()).unwrap().to_object(py);
         let response = PyResponse {
@@ -89,7 +89,7 @@ impl PyResponse {
     // To do: Add check for content-type in header and change response_type accordingly
     #[new]
     pub fn new(
-        py: Python,
+        py: Python<'_>,
         status_code: u16,
         headers: Py<PyDict>,
         body: Py<PyAny>,
@@ -110,14 +110,14 @@ impl PyResponse {
     }
 
     #[setter]
-    pub fn set_body(&mut self, py: Python, body: Py<PyAny>) -> PyResult<()> {
+    pub fn set_body(&mut self, py: Python<'_>, body: Py<PyAny>) -> PyResult<()> {
         check_body_type(py, body.clone())?;
         self.body = body;
         Ok(())
     }
 
     #[setter]
-    pub fn set_file_path(&mut self, py: Python, file_path: &str) -> PyResult<()> {
+    pub fn set_file_path(&mut self, py: Python<'_>, file_path: &str) -> PyResult<()> {
         // we should be handling based on headers but works for now
         self.response_type = "static_file".to_string();
         self.file_path = Some(file_path.to_string());
