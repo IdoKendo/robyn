@@ -2,7 +2,7 @@
 name = "robyn"
 version = "0.37.0"
 authors = ["Sanskar Jethi <sansyrox@gmail.com>"]
-edition = "2018"
+edition = "2021"
 description = "A web server that is fast!"
 license = "BSD License (BSD)"
 homepage = "https://github.com/sansyrox/robyn"
